@@ -17,6 +17,10 @@ metadata/embeddings/
 *.npy
 
 
+# ==== Experiment metadata and results ====
+metadata/
+
+
 # ==== Python ====
 __pycache__/
 *.py[cod]
