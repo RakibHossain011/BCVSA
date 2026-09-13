@@ -36,35 +36,6 @@ The harmonic mean is the primary GZSL metric because it rewards balanced perform
 
 ---
 
-## Headline Results
-
-| Method | ZSL %† | Seen (S%)† | Unseen (U%)† | **Harmonic Mean (H%)** | F1 Seen | F1 Unseen |
-|---|---:|---:|---:|---:|---:|---:|
-| DeViSE (Frome et al., 2013) | – | 62.72 | 22.95 | 33.61 | 67.29 | 23.38 |
-| ESZSL (Romera-Paredes & Torr, 2015) | – | 64.27 | 20.26 | 30.81 | 70.63 | 22.18 |
-| SAE (Kodirov et al., 2017) | – | 55.97 | 24.17 | 33.76 | 59.77 | 22.66 |
-| Ablation A — CLIP zero-shot only | 70.49 | 29.19 | 54.60 | 38.04 | 28.13 | 48.80 |
-| Ablation B — DINOv2 probe (supervised, seen-only) | N/A | 96.57 | N/A | N/A | 96.59 | N/A |
-| Ablation C — Trainable alignment head | 73.52 | 89.93 | 68.19 | 77.56 | 92.48 | 59.41 |
-| **BCVSA (proposed), 0-shot** | **70.53** | **96.46** | **70.49** | **81.45** | **96.51** | **58.09** |
-| BCVSA, 3-shot | 84.00 | 96.46 | 83.52 | **90.67 ± 1.63** | – | – |
-| BCVSA, 5-shot | 85.98 | 96.46 | 85.78 | **91.69 ± 1.09** | – | – |
-| BCVSA, federated (4 clients, self-calibrated) | 70.53 | 92.02 | 70.47 | 79.82 | 91.09 | 58.09 |
-| BCVSA, federated + privacy mechanism | – | 92.45 | 70.46 | 79.97 | – | – |
-
-† External baselines (DeViSE/ESZSL/SAE) and BCVSA/ablations are evaluated under the same GZSL protocol implemented in `baseline_comparison.py`.
-
-‡ For the few-shot rows, H is aggregated across five seeds (42/123/456/789/1000). ZSL/S/U shown are from the seed-42 support draw. S is unchanged across the few-shot seeds because the seen-class scoring branch remains fixed.
-
-### Other headline findings
-
-- **Semantic severity estimation:** A 2.07× separation between mean diseased-class and mean healthy-class severity scores, with 100% correct healthy-vs-diseased ranking across the eight evaluated crops where both classes were available. This is a semantic embedding-space measure, **not a clinically validated severity score**.
-- **Federated learning:** Federated training outperforms all four local-only client baselines under the simulated non-IID crop-based partition. Local-only H ranges from 43.86% to 73.15%, while federated H reaches 79.82%.
-- **Privacy-aware federated experiment:** The federated + noise configuration reaches H = 79.97% compared with 79.82% for plain FL. This difference should be interpreted as no measurable utility cost in this single-run experiment, rather than evidence that privacy improves performance.
-- **Calibration:** BCVSA achieves strong seen-branch calibration (ECE = 1.54%) while unseen-branch calibration remains substantially weaker (ECE = 30.38%), which is reported explicitly rather than hidden.
-
----
-
 ## What Makes This Different
 
 Zero-shot CLIP for plant disease recognition, federated learning for plant disease classification, and classical embedding-based ZSL methods such as DeViSE, ESZSL, and SAE all have prior work.
@@ -130,48 +101,6 @@ H = 2 × S × U / (S + U)
 
 - Few-shot robustness is evaluated across five random seeds: `42, 123, 456, 789, 1000`.
 - Temperature search uses a strict-improvement tie-break to avoid selecting a value merely because of search iteration order.
-
----
-
-## Full Results
-
-### Few-shot adaptation
-
-Five-seed results:
-
-| Shots | BCVSA H% (mean ± std) | Alignment-head ablation H% (mean ± std) |
-|---|---:|---:|
-| 3-shot | **90.67 ± 1.63** | 85.54 ± 1.82 |
-| 5-shot | **91.69 ± 1.09** | 87.05 ± 1.44 |
-
-### Federated learning
-
-| Setting | Bangladesh | India | USA | Spain | Federated (4 clients) |
-|---|---:|---:|---:|---:|---:|
-| Local-only H% | 63.33 | 73.15 | 62.60 | 43.86 | — |
-| Federated H% | — | — | — | — | **79.82** |
-
-The four clients are **simulated non-IID partitions by crop mix**. They do not represent literal disease data collected from those countries.
-
-### Calibration
-
-| Method | ECE Seen% | ECE Unseen% |
-|---|---:|---:|
-| Ablation A — CLIP only | 9.56 | 17.20 |
-| Ablation C — Alignment head | 4.34 | 12.66 |
-| **BCVSA (proposed)** | **1.54** | 30.38 |
-
-BCVSA's seen-branch calibration is strong, while unseen-branch calibration remains comparatively poor. This limitation is reported directly.
-
-### Final calibration parameters
-
-```text
-alpha = 0.8
-gamma = 0.155
-T_clip = 0.01
-```
-
-These parameters were selected using the designated calibration/validation data.
 
 ---
 
