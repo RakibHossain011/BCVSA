@@ -1,0 +1,12 @@
+torch
+transformers
+scipy
+scikit-learn
+pandas
+numpy
+Pillow
+tqdm
+matplotlib
+
+# Optional — only needed for Intel Arc / XPU acceleration:
+# intel-extension-for-pytorch

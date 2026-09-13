@@ -1,0 +1,65 @@
+# ============================================================
+# BCVSA - Git Ignore
+# ============================================================
+
+# ==== Datasets ====
+# Raw and processed datasets are not included in this repository.
+data/
+
+
+# ==== Large binary artifacts ====
+# Regenerate these locally using the feature extraction pipeline.
+metadata/embeddings/
+
+*.pkl
+*.pt
+*.pth
+*.npy
+
+
+# ==== Python ====
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+.eggs/
+build/
+dist/
+
+
+# ==== Virtual environments ====
+.venv/
+venv/
+env/
+ENV/
+
+
+# ==== Jupyter ====
+.ipynb_checkpoints/
+
+
+# ==== IDE / editor ====
+.vscode/
+.idea/
+*.swp
+
+
+# ==== OS ====
+.DS_Store
+Thumbs.db
+desktop.ini
+
+
+# ==== Logs ====
+*.log
+
+
+# ==== Temporary / backup files ====
+*.tmp
+*.bak
+
+
+# ==== Secrets / local configuration ====
+.env
+.env.*
+!.env.example
